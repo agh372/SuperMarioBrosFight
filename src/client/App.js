@@ -11,33 +11,40 @@ export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      status: 'disconnected',
-      title: '',
-      member: {},
-      username: null
+      socket: io.connect('http://localhost:8080'),
+      gameConnected: false
       // The member variable represents the user of this socket.
       // Every socket will have a different socket.
     };
+    
+
     //this.emit = this.emit.bind(this);
   }
 
 
   componentDidMount() {
-    this.socket = io('http://localhost:8080');
+  // this.setState({socket:io.connect('http://localhost:8080')}); 
 
-
-    this.socket.on('connect', () => {
-
-    });
-
+     this.state.socket.on('newGame', (data) => {
+       console.log('wow '+data.room);
+       this.setState({gameConnected:true}); 
+     //  const message =
+     //    `Hello, ${data.name}. Please ask your friend to enter Game ID: 
+   //   ${data.room}. Waiting for player 2...`;
+  
+  //     // Create game for player 1
+  //     game = new Game(data.room);
+  //     game.displayBoard(message);
+   });
     // fetch('/api/getUsername')
     //   .then(res => res.json())
     //   .then(user => this.setState({ username: user.username }));
   }
 
   render() {
+
     return (
-      <Home>
+      <Home socket={this.state.socket}>
       </Home>
     );
   }
