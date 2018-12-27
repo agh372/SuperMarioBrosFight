@@ -5,7 +5,6 @@ import { Link } from 'react-router';
 import { createGlobalStyle   } from "styled-components";
 import Montserrat from './fonts/mario.woff';
 import Player from './model/Player'
-import {observable, computed} from 'mobx'
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -17,7 +16,6 @@ const GlobalStyles = createGlobalStyle`
   font-family: Montserrat;
 }
 `
-
 export default class Home extends Component {
   constructor(props) {
     super(props);
