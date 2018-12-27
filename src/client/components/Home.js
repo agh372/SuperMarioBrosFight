@@ -1,4 +1,3 @@
-//import './app.css';
 import Wrapper from './Wrapper';
 import React, { Component } from 'react';
 import { Link } from 'react-router';
@@ -14,9 +13,7 @@ const GlobalStyles = createGlobalStyle`
   * {
   font-family: Montserrat;
 }
-
 `
-
 export default class Home extends Component {
 
   render() {
@@ -31,13 +28,13 @@ export default class Home extends Component {
             <li>Click on join game. </li>
         </ol>
         <h4>Create a new Game</h4>
-				<input type="text" name="name" id="nameNew" placeholder="Enter your name" required></input>
-				<button id="new">New Game</button>
-				<br></br><br></br>
-				<h4>Join an existing game</h4>
-				<input type="text" name="name" id="nameJoin" placeholder="Enter your name" required></input>
-				<input type="text" name="room" id="room" placeholder="Enter Game ID" required></input>
-				<button id="join">Join Game</button>
+	<input type="text" name="name" id="nameNew" placeholder="Enter your name" required></input>
+	<button id="new">New Game</button>
+	<br></br><br></br>
+	<h4>Join an existing game</h4>
+	<input type="text" name="name" id="nameJoin" placeholder="Enter your name" required></input>
+	<input type="text" name="room" id="room" placeholder="Enter Game ID" required></input>
+	<button id="join">Join Game</button>
     </Wrapper>
     );
   }
