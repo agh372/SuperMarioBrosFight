@@ -1,3 +1,6 @@
+import levels from './levels/1-1.json';
+
+
 export function loadImage(url) {
     return new Promise(resolve => {
         const image = new Image();
@@ -10,5 +13,5 @@ export function loadImage(url) {
 
 export function loadLevel(name) {
     return fetch(`/levels/${name}.json`)
-    .then(r => r.json());
+    .then(r => levels);
 }
