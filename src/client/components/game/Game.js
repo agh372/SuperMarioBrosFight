@@ -2,9 +2,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import SpriteSheet from './SpriteSheet.js';
-import {loadImage, loadLevel} from './loaders.js';
-import Tiles from './tiles.png';
+import {loadLevel} from './loaders.js';
 
+import Compositor from './Compositor.js';
+import { loadBackgroundSprites} from './sprites.js';
+import {createBackgroundLayer} from './layers.js'
 
 export default class Game extends Component {
   constructor(props) {
@@ -12,43 +14,50 @@ export default class Game extends Component {
     this.myRef = React.createRef();
   }
 
-
- drawBackground(background, context, sprites) {
-    background.ranges.forEach(([x1, x2, y1, y2]) => {
-        for (let x = x1; x < x2; ++x) {
-            for (let y = y1; y < y2; ++y) {
-                sprites.drawTile(background.tile, context, x, y);
-            }
-        }
-    });
+ createSpriteLayer(sprite, pos) {
+    return function drawSpriteLayer(context) {
+        sprite.draw('idle', context, pos.x, pos.y);
+    };
 }
 
 componentDidMount(){
-  console.log(this.myRef);
-  //.innerHTML  = "Testing";
-  const context = this.myRef.current.getContext('2d');
-loadImage(Tiles)
-.then(image => {
-  console.log("cool");
-    const sprites = new SpriteSheet(image);
-    sprites.define('ground', 0, 0);
-    sprites.define('sky', 3, 23);
 
-    loadLevel('1-1')
-    .then(level => {
-        level.backgrounds.forEach(bg => {
-            {this.drawBackground(bg, context, sprites)};
-        });
+    const context = this.myRef.current.getContext('2d');
+
+    Promise.all([
+      //  loadMarioSprite(),
+        loadBackgroundSprites(),
+        loadLevel('1-1')
+    ])
+    .then(([ backgroundSprites, level]) => {
+        console.log('Level loader', level);
+    
+        const comp = new Compositor();
+        comp.layers.push(createBackgroundLayer(level.backgrounds, backgroundSprites));
+    
+        const pos = {
+            x: 64,
+            y: 64,
+        };
+    
+      //  comp.layers.push(this.createSpriteLayer(marioSprite, pos));
+    
+        function update() {
+            comp.draw(context);
+            pos.x += 2;
+            pos.y += 1;
+            requestAnimationFrame(update);
+        }
+    
+        update();
     });
-});
 }
 
   render() {
     return (
         <div>
           <canvas ref={this.myRef} id="screen" width="640" height="480"></canvas>
-
-</div>
+        </div>
     );
   }
 }
