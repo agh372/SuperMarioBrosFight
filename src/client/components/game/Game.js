@@ -5,7 +5,7 @@ import SpriteSheet from './SpriteSheet.js';
 import {loadLevel} from './loaders.js';
 
 import Compositor from './Compositor.js';
-import { loadBackgroundSprites} from './sprites.js';
+import {loadMarioSprite,  loadBackgroundSprites} from './sprites.js';
 import {createBackgroundLayer} from './layers.js'
 
 export default class Game extends Component {
@@ -25,11 +25,11 @@ componentDidMount(){
     const context = this.myRef.current.getContext('2d');
 
     Promise.all([
-      //  loadMarioSprite(),
+        loadMarioSprite(),
         loadBackgroundSprites(),
         loadLevel('1-1')
     ])
-    .then(([ backgroundSprites, level]) => {
+    .then(([ marioSprite,backgroundSprites, level]) => {
         console.log('Level loader', level);
     
         const comp = new Compositor();
@@ -40,7 +40,7 @@ componentDidMount(){
             y: 64,
         };
     
-      //  comp.layers.push(this.createSpriteLayer(marioSprite, pos));
+        comp.layers.push(this.createSpriteLayer(marioSprite, pos));
     
         function update() {
             comp.draw(context);

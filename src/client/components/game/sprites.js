@@ -1,17 +1,17 @@
 import SpriteSheet from './SpriteSheet.js';
 import {loadImage} from './loaders.js';
 import Tiles from './img/tiles.png';
-//import Characters from './img/characters.gif';
+import Characters from './img/characters.gif';
 
 
-// export function loadMarioSprite() {
-//     return loadImage(Characters)
-//     .then(image => {
-//         const mario = new SpriteSheet(image, 16, 16);
-//         mario.define('idle', 276, 44, 16, 16);
-//         return mario;
-//     });
-// }
+export function loadMarioSprite() {
+    return loadImage(Characters)
+    .then(image => {
+        const mario = new SpriteSheet(image, 16, 16);
+        mario.define('idle', 276, 44, 16, 16);
+        return mario;
+    });
+}
 
 export function loadBackgroundSprites() {
     return loadImage(Tiles)
