@@ -5,8 +5,13 @@ import SpriteSheet from './SpriteSheet.js';
 import {loadLevel} from './loaders.js';
 
 import Compositor from './Compositor.js';
-import {loadMarioSprite,  loadBackgroundSprites} from './sprites.js';
-import {createBackgroundLayer} from './layers.js'
+import {createMario} from './entities';
+
+import { loadBackgroundSprites} from './sprites.js';
+import {createSpriteLayer, createBackgroundLayer} from './layers.js'
+
+import {Vec2} from './math.js'
+import Entity from './Entity.js';
 
 export default class Game extends Component {
   constructor(props) {
@@ -14,42 +19,35 @@ export default class Game extends Component {
     this.myRef = React.createRef();
   }
 
- createSpriteLayer(sprite, pos) {
-    return function drawSpriteLayer(context) {
-        sprite.draw('idle', context, pos.x, pos.y);
-    };
-}
-
 componentDidMount(){
 
     const context = this.myRef.current.getContext('2d');
-
+    const gravity = 20;
     Promise.all([
-        loadMarioSprite(),
+        createMario(),
         loadBackgroundSprites(),
         loadLevel('1-1')
     ])
-    .then(([ marioSprite,backgroundSprites, level]) => {
-        console.log('Level loader', level);
+    .then(([ mario,backgroundSprites, level]) => {
+        console.log('Level loader', mario.pos);
     
         const comp = new Compositor();
         comp.layers.push(createBackgroundLayer(level.backgrounds, backgroundSprites));
-    
-        const pos = {
-            x: 64,
-            y: 64,
-        };
-    
-        comp.layers.push(this.createSpriteLayer(marioSprite, pos));
-    
-        function update() {
+        mario.pos.set(64, 180);
+        mario.vel.set(20, -60);
+        comp.layers.push(createSpriteLayer(mario));
+    let deltaTime = 0;
+    let lastTime = 0;
+        function update(time) {
+            deltaTime = (time - lastTime)/1000;
             comp.draw(context);
-            pos.x += 2;
-            pos.y += 1;
+            mario.update(deltaTime);
+            mario.vel.y += gravity;
             requestAnimationFrame(update);
+            lastTime = time;
         }
     
-        update();
+        update(0);
     });
 }
 
