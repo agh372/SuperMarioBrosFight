@@ -9,9 +9,13 @@ import {createMario} from './entities';
 
 import { loadBackgroundSprites} from './sprites.js';
 import {createSpriteLayer, createBackgroundLayer} from './layers.js'
+import Timer from './Timer.js';
 
 import {Vec2} from './math.js'
 import Entity from './Entity.js';
+
+import Keyboard from './KeyboardState.js';
+
 
 export default class Game extends Component {
   constructor(props) {
@@ -22,7 +26,7 @@ export default class Game extends Component {
 componentDidMount(){
 
     const context = this.myRef.current.getContext('2d');
-    const gravity = 20;
+    const gravity = 120;
     Promise.all([
         createMario(),
         loadBackgroundSprites(),
@@ -35,19 +39,31 @@ componentDidMount(){
         comp.layers.push(createBackgroundLayer(level.backgrounds, backgroundSprites));
         mario.pos.set(64, 180);
         mario.vel.set(20, -60);
-        comp.layers.push(createSpriteLayer(mario));
-    let deltaTime = 0;
-    let lastTime = 0;
-        function update(time) {
-            deltaTime = (time - lastTime)/1000;
-            comp.draw(context);
+        const SPACE = 32;
+        const input = new Keyboard();
+        input.addMapping(SPACE, keyState => {
+            if (keyState) {
+                mario.jump.start();
+            } else {
+                mario.jump.cancel();
+            }
+        });
+        input.listenTo(window);
+    
+    
+        const spriteLayer = createSpriteLayer(mario);
+        comp.layers.push(spriteLayer);
+    
+        const timer = new Timer(1/60);
+        timer.update = function update(deltaTime) {
             mario.update(deltaTime);
-            mario.vel.y += gravity;
-            requestAnimationFrame(update);
-            lastTime = time;
+    
+            comp.draw(context);
+    
+            mario.vel.y += gravity * deltaTime;
         }
     
-        update(0);
+        timer.start();
     });
 }
 

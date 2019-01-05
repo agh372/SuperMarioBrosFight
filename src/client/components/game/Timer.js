@@ -4,12 +4,12 @@ export default class Timer {
         let lastTime = 0;
 
         this.updateProxy = (time) => {
-            accumulatedTime += (time - lastTime) / 1000;
+            deltaTime = (time - lastTime)/1000;
 
-            while (accumulatedTime > deltaTime) {
+            //while (accumulatedTime > deltaTime) {
                 this.update(deltaTime);
-                accumulatedTime -= deltaTime;
-            }
+          //      accumulatedTime -= deltaTime;
+         //   }
 
             lastTime = time;
 
@@ -25,3 +25,13 @@ export default class Timer {
         this.enqueue();
     }
 }
+
+
+
+// while(accumulatedTime > deltaTime){
+//  comp.draw(context);
+//  mario.updatee(deltaTime);
+//  mario.vel.y += gravity;
+//  //requestAnimationFrame(update);
+
+//  accumulatedTime -= deltaTime;
