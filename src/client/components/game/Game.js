@@ -15,8 +15,11 @@ import {Vec2} from './math.js'
 import Entity from './Entity.js';
 
 import Keyboard from './KeyboardState.js';
-import {createCollisionLayer} from './layers.js';
+import {createCollisionLayer, createCameraLayer} from './layers.js';
 import {setupKeyboard} from './input.js';
+import levels from './levels/1-1.json';
+import {setupMouseControl} from './debug.js';
+import Camera from './Camera.js';
 
 
 export default class Game extends Component {
@@ -34,36 +37,36 @@ componentDidMount(){
     Promise.all([
         createMario(),
      //   loadBackgroundSprites(),
-        loadLevel('1-1')
+        loadLevel(levels)
     ])
     .then(([ mario, level]) => {
         console.log('Level loader', mario.pos);
     
      //   const comp = new Compositor();
        // comp.layers.push(createBackgroundLayer(level.backgrounds, backgroundSprites));
-       mario.pos.set(64, 64);
-       level.comp.layers.push(createCollisionLayer(level));
+       const camera = new Camera();
+    window.camera = camera;
+
+    mario.pos.set(64, 64);
+
+    level.comp.layers.push(
+        createCollisionLayer(level),
+        createCameraLayer(camera));
+
 
     level.entities.add(mario);
 
     const input = setupKeyboard(mario);
     input.listenTo(window);
 
-    ['mousedown', 'mousemove'].forEach(eventName => {
-        canvas.addEventListener(eventName, event => {
-            if (event.buttons === 1) {
-                mario.vel.set(0, 0);
-                mario.pos.set(event.offsetX, event.offsetY);
-            }
-        });
-    });
+    setupMouseControl(canvas, mario, camera);
 
 
     const timer = new Timer(1/60);
     timer.update = function update(deltaTime) {
         level.update(deltaTime);
 
-        level.comp.draw(context);
+        level.comp.draw(context, camera);
     }
 
     timer.start();
