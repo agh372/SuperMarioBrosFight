@@ -33,13 +33,14 @@ componentDidMount(){
     const context = this.myRef.current.getContext('2d');
     const canvas = this.myRef.current;
 
-    const gravity = 260;
+    const gravity = 1500;
     Promise.all([
-        createMario(),
+      loadLevel("1-1"),
+        createMario()
      //   loadBackgroundSprites(),
-        loadLevel("1-1")
+        
     ])
-    .then(([ mario, level]) => {
+    .then(([ level, mario]) => {
         console.log('Level loader', mario.pos);
     
      //   const comp = new Compositor();
@@ -47,7 +48,7 @@ componentDidMount(){
        const camera = new Camera();
     window.camera = camera;
 
-    mario.pos.set(64, 64);
+    mario.pos.set(94, -30);
 
     // level.comp.layers.push(
     //     createCollisionLayer(level),
@@ -59,12 +60,15 @@ componentDidMount(){
     const input = setupKeyboard(mario);
     input.listenTo(window);
 
-    setupMouseControl(canvas, mario, camera);
+  //  setupMouseControl(canvas, mario, camera);
 
 
     const timer = new Timer(1/60);
     timer.update = function update(deltaTime) {
         level.update(deltaTime);
+        if (mario.pos.x > 100) {
+          camera.pos.x = mario.pos.x - 100;
+      }
 
         level.comp.draw(context, camera);
     }
