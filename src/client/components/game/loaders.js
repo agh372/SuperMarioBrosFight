@@ -19,9 +19,8 @@ export function loadImage(url) {
 }
 
 function loadJSON(url) {
-    console.log("json: "+url);
     return fetch(url)
-    .then(r => url);
+    .then(r => r.json());
 }
 
 function createTiles(level, backgrounds) {
@@ -58,10 +57,10 @@ function createTiles(level, backgrounds) {
 }
 
 function loadSpriteSheet(name) {
-    return loadJSON(name)
+    return loadJSON(`sprites/${name}.json`)
     .then(sheetSpec => Promise.all([
         sheetSpec,
-        loadImage(Tiles),
+        loadImage(sheetSpec.imageURL),
     ]))
     .then(([sheetSpec, image]) => {
         const sprites = new SpriteSheet(
@@ -81,10 +80,10 @@ function loadSpriteSheet(name) {
 }
 
 export function loadLevel(name) {
-    return loadJSON(levels)
+    return loadJSON(`level/${name}.json`)
     .then(levelSpec => Promise.all([
         levelSpec,
-        loadSpriteSheet(spritesworld),
+        loadSpriteSheet(levelSpec.spriteSheet)
     ]))
     .then(([levelSpec, backgroundSprites]) => {
         const level = new Level();

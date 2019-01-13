@@ -18,7 +18,9 @@ const io = require('socket.io')(server);
 let rooms = 0;
 
 app.use(express.static('dist'));
-
+app.use('/level/',express.static('src/client/components/game/levels'));
+app.use('/sprites/',express.static('src/client/components/game/sprites'));
+app.use('/img/',express.static('src/client/components/img'));
 
 io.on('connection', (socket) => {
 

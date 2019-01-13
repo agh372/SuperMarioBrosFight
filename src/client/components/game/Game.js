@@ -37,7 +37,7 @@ componentDidMount(){
     Promise.all([
         createMario(),
      //   loadBackgroundSprites(),
-        loadLevel(levels)
+        loadLevel("1-1")
     ])
     .then(([ mario, level]) => {
         console.log('Level loader', mario.pos);
