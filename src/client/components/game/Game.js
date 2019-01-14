@@ -18,7 +18,6 @@ import Keyboard from './KeyboardState.js';
 import {createCollisionLayer, createCameraLayer} from './layers.js';
 import {setupKeyboard} from './input.js';
 import levels from './levels/1-1.json';
-import {setupMouseControl} from './debug.js';
 import Camera from './Camera.js';
 
 
@@ -28,8 +27,19 @@ export default class Game extends Component {
     this.myRef = React.createRef();
   }
 
+
+  componentWillMount(){
+
+
+  
+  }
+
+
+  
+
 componentDidMount(){
 
+  console.log("cool: "+this.props.id);
     const context = this.myRef.current.getContext('2d');
     const canvas = this.myRef.current;
 
@@ -41,13 +51,12 @@ componentDidMount(){
         
     ])
     .then(([ level, mario]) => {
-        console.log('Level loader', mario.pos);
+       // console.log('Level loader', mario.pos);
     
      //   const comp = new Compositor();
        // comp.layers.push(createBackgroundLayer(level.backgrounds, backgroundSprites));
        const camera = new Camera();
     window.camera = camera;
-
     mario.pos.set(94, -30);
 
     // level.comp.layers.push(
@@ -81,6 +90,7 @@ componentDidMount(){
     return (
         <div>
           <canvas ref={this.myRef} id="screen" width="640" height="480"></canvas>
+          <div>Waiting for player 2...Please enter Game id: <strong>{this.props.id}</strong> to join this game</div>
         </div>
     );
   }

@@ -27,7 +27,6 @@ export default class Jump extends Trait {
     }
 
     obstruct(entity, side) {
-        console.trace();
         if (side === Sides.BOTTOM) {
             this.ready = 1;
         } else if (side === Sides.TOP) {
@@ -45,7 +44,6 @@ export default class Jump extends Trait {
             this.requestTime -= deltaTime;
         }
 
-        console.log(this.engageTime);
         if (this.engageTime > 0) {
             entity.vel.y = -(this.velocity + Math.abs(entity.vel.x) * this.speedBoost);
             this.engageTime -= deltaTime;

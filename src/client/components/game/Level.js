@@ -12,6 +12,7 @@ export default class Level {
         this.tiles = new Matrix();
 
         this.tileCollider = new TileCollider(this.tiles);
+        this.tempGravity = 0.1;
     }
 
     update(deltaTime) {
@@ -24,9 +25,12 @@ export default class Level {
             entity.pos.y += entity.vel.y * deltaTime;
             this.tileCollider.checkY(entity);
 
-            entity.vel.y += this.gravity * deltaTime;
+            entity.vel.y += this.gravity * deltaTime *this.tempGravity;
         });
-
         this.totalTime += deltaTime;
+        if(this.totalTime > 3){
+            this.tempGravity = 1;
+        }
+
     }
 }

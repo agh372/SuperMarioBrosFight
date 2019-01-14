@@ -5,6 +5,7 @@ import Go from './traits/Go.js';
 import {loadMarioSprite} from './sprites.js';
 import {loadSpriteSheet} from './loaders.js';
 import {createAnim} from './anim.js';
+import {delay} from './debug.js';
 
 export function createMario() {
     return loadSpriteSheet('mario')

@@ -22,14 +22,41 @@ app.use('/level/',express.static('src/client/components/game/levels'));
 app.use('/sprites/',express.static('src/client/components/game/sprites'));
 app.use('/img/',express.static('src/client/components/img'));
 
+var getUsersInRoomNumber = function(roomName, namespace) {
+    if (!namespace) namespace = '/';
+    var room = io.nsps[namespace].adapter.rooms[roomName];
+    if (!room) return null;
+    var num = 0;
+    for (var i in room) num++;
+    return num;
+}
+
 io.on('connection', (socket) => {
 
     // Create a new game room and notify the creator of game.
     socket.on('createGame', (data) => {
-        console.log(data.name)
+        console.log("server: room-"+ (++rooms));
         socket.join(`room-${++rooms}`);
         socket.emit('newGame', { name: data.name, room: `room-${rooms}` });
     });
+
+
+
+    socket.on('joinGame', function (data) {
+        socket.join(data.room);
+
+       var room =  io.nsps["/"].adapter.rooms[data.room];
+     
+        // if (room && room.length === 1) {
+            console.log(room.length);
+
+         //   socket.broadcast.to(data.room).emit('player1', {});
+          //  socket.emit('player2', { name: data.name, room: data.room })
+        // } else {
+        //     socket.emit('err', { message: 'Sorry, The room is full!' });
+        // }
+});
+
 });
 
 server.listen(8080, () => console.log('Listening on port 8080!'));

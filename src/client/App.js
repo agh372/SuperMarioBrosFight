@@ -13,23 +13,24 @@ export default class App extends Component {
     super(props);
     this.state = {
       socket: io.connect('http://localhost:8080'),
-      gameConnected: false
+      gameConnected: false,
+      id: ""
+
     };
   }
 
   componentDidMount() {
      this.state.socket.on('newGame', (data) => {
-       console.log('wow '+data.room);
+       this.state.id = data.room;
        this.setState({gameConnected:true}); 
    });
    console.log('componentDidMount ');
-
   }
 
   render() {
     return (
       <div>
-     {this.state.gameConnected? <Game></Game>:
+     {this.state.gameConnected? <Game  id={this.state.id} socket={this.state.socket}></Game>:
       <Home socket={this.state.socket}>
   </Home> }
   </div>

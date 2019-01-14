@@ -20,6 +20,21 @@ export default class Home extends Component {
   constructor(props) {
     super(props);
     this.onClickNewGameButton = this.onClickNewGameButton.bind(this);
+    this.onClickJoinGameButton = this.onClickJoinGameButton.bind(this);
+
+    this.state = {
+      id: "",
+ };
+  }
+
+  onClickJoinGameButton(props){
+  
+  if (this.refs.gameIdRef == null && this.refs.secondPlayerNameRef == null) {
+        alert('Please enter your name and game ID.'+this.refs.gameIdRef);
+    return;
+  }
+  this.props.socket.emit('joinGame', { name, room: this.refs.gameIdRef.value });
+ // this.player = new Player(name, P2);
 
   }
 
@@ -28,7 +43,6 @@ export default class Home extends Component {
     if (this.refs.myInput !== null) {
     	var input = this.refs.myInput;
       var name = input.value;
-      console.log(this.props.socket);
       this.props.socket.emit('createGame', { name });
       this.player = new Player('foo','bar');
 
@@ -37,6 +51,19 @@ export default class Home extends Component {
       return;
     }
   }
+
+  componentDidMount(){
+
+    this.props.socket.on('newGame', (data) => {
+      // const message =
+      //   `Hello, ${data.name}. Please ask your friend to enter Game ID: 
+      //   ${data.room}. Waiting for player 2...`;
+  this.state.id = data.room;
+      console.log("player: "+this.state.id);
+  });
+  
+  }
+
   render() {
     return (
         <Wrapper>
@@ -53,10 +80,16 @@ export default class Home extends Component {
 				<button id="new" onClick={this.onClickNewGameButton}>New Game</button>
 				<br></br><br></br>
 				<h4>Join an existing game</h4>
-				<input type="text" name="name" id="nameJoin" placeholder="Enter your name" required></input>
-				<input type="text" name="room" id="room" placeholder="Enter Game ID" required></input>
-				<button id="join">Join Game</button>
+				<input type="text" name="name" id="nameJoin" placeholder="Enter your name" ref="secondPlayerNameRef" required></input>
+				<input type="text" name="room" id="room" placeholder="Enter Game ID" ref="gameIdRef" required></input>
+				<button id="join" onClick={this.onClickJoinGameButton}>Join Game</button>
     </Wrapper>
     );
   }
 }
+
+
+// $('#join').on('click', () => {
+
+// });
+

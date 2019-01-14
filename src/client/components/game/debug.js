@@ -21,3 +21,10 @@ export function setupMouseControl(canvas, entity, camera) {
         event.preventDefault();
     });
 }
+
+
+export function delay(t) {
+    return new Promise(function(resolve) {
+      setTimeout(resolve, t);
+    });
+  }
