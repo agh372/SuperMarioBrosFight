@@ -35,26 +35,33 @@ io.on('connection', (socket) => {
 
     // Create a new game room and notify the creator of game.
     socket.on('createGame', (data) => {
-        console.log("server: room-"+ (++rooms));
+        console.log("server: room-"+ (rooms+1));
         socket.join(`room-${++rooms}`);
         socket.emit('newGame', { name: data.name, room: `room-${rooms}` });
     });
 
 
+    socket.on('secondPlayerConnected', function (data) {
+    console.log("server ack p2 "+data.room);
+        socket.broadcast.to(data.room).emit('secondPlayerConnectedAck', {});
+
+
+    });
 
     socket.on('joinGame', function (data) {
-        socket.join(data.room);
 
        var room =  io.nsps["/"].adapter.rooms[data.room];
      
-        // if (room && room.length === 1) {
+         if (room && room.length === 1) {
             console.log(room.length);
+            socket.join(data.room);
 
-         //   socket.broadcast.to(data.room).emit('player1', {});
-          //  socket.emit('player2', { name: data.name, room: data.room })
-        // } else {
-        //     socket.emit('err', { message: 'Sorry, The room is full!' });
-        // }
+            socket.broadcast.to(data.room).emit('player1', {});
+            socket.emit('player2', { name: data.name, room: data.room })
+         } else {
+          //  socket.emit('err', { message: 'Sorry, The room is full!' });
+          console.log("Room is full "+room.length);
+     }
 });
 
 });

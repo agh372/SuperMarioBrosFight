@@ -25,6 +25,10 @@ export default class Game extends Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
+    this.state = {
+      twoPlayersConnected:false
+ };
+
   }
 
 
@@ -39,7 +43,20 @@ export default class Game extends Component {
 
 componentDidMount(){
 
-  console.log("cool: "+this.props.id);
+  if(this.props.secondPlayerConnected){
+    console.log(this.props.socket);
+    this.props.socket.emit('secondPlayerConnected', { name, room: this.props.id });
+  }
+
+  this.props.socket.on('secondPlayerConnectedAck', (data) => {
+    console.log("PLEASE");
+
+    this.state.id = data.room;
+    this.props.secondPlayerConnected = true; 
+    this.setState({twoPlayersConnected:true}); 
+
+});
+
     const context = this.myRef.current.getContext('2d');
     const canvas = this.myRef.current;
 
@@ -64,7 +81,7 @@ componentDidMount(){
     //     createCameraLayer(camera));
 
 
-    level.entities.add(mario);
+   // level.entities.add(mario);
 
     const input = setupKeyboard(mario);
     input.listenTo(window);
@@ -90,7 +107,11 @@ componentDidMount(){
     return (
         <div>
           <canvas ref={this.myRef} id="screen" width="640" height="480"></canvas>
+
+          {!this.props.secondPlayerConnected && !this.state.twoPlayersConnected ? (
           <div>Waiting for player 2...Please enter Game id: <strong>{this.props.id}</strong> to join this game</div>
+        ) : (
+<div></div>      )}
         </div>
     );
   }
