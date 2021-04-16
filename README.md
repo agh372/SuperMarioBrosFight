@@ -10,7 +10,9 @@ A multliplayer game built with socket.io + react + nodejs
 
 ## Screenshot
 
-![screenshot 602](https://user-images.githubusercontent.com/37753430/52513569-43f80e00-2bd1-11e9-9e2b-586489ca9791.png)
+
+https://user-images.githubusercontent.com/37753430/115078094-b5742b00-9ec4-11eb-98e9-002830824fce.mp4
+
 
 
 ## How to run
