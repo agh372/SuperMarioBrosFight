@@ -5,7 +5,7 @@ A multliplayer game built with socket.io + react + nodejs
 ## Feature
 
 1) Private lobby can be created
-2) Join the game by adding room-id (No headache of adding the ip address)
+2) Join the game by adding room-id 
 3) Engage in battle with your childhood favorite game
 
 ## Screenshot
