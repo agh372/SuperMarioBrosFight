@@ -30,5 +30,8 @@ Rule: First player gets Mario and the second player gets Luigi and the player wh
 
 
 
+##
+
+
 
 Inspired from Meth Meth Method youtube tutorial on vanilla Super Mario.
