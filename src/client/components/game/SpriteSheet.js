@@ -48,6 +48,15 @@ export default class SpriteSheet {
     draw(name, context, x, y, flip = false) {
         const buffer = this.tiles.get(name)[flip ? 1 : 0];
         context.drawImage(buffer, x, y);
+
+        // var myImg =context.getImageData(x, y, 16, 16);
+        // for (var t=0;t< myImg.data.length;t+=4) {        
+        //         myImg.data[t]= 255 | myImg.data[t];        
+       
+        // }
+        // context.putImageData(myImg,x,y);
+
+
     }
 
     drawAnim(name, context, x, y, distance) {

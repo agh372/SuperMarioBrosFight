@@ -7,6 +7,7 @@ import {loadBackgroundSprites} from './sprites.js';
 import Tiles from './img/tiles.png';
 import SpriteSheet from './SpriteSheet.js';
 import {createAnim} from './anim.js';
+import { createMario } from './entities';
 
 
 export function loadImage(url) {
@@ -77,7 +78,6 @@ export function loadSpriteSheet(name) {
                     tileSpec.index[1]);
             });
         }
-console.log("wow");
         if (sheetSpec.frames) {
             sheetSpec.frames.forEach(frameSpec => {
                 sprites.define(frameSpec.name, ...frameSpec.rect);
@@ -94,6 +94,9 @@ console.log("wow");
         return sprites;
     });
 }
+
+
+
 export function loadLevel(name) {
     return loadJSON(`level/${name}.json`)
     .then(levelSpec => Promise.all([
@@ -102,9 +105,9 @@ export function loadLevel(name) {
     ]))
     .then(([levelSpec, backgroundSprites]) => {
         const level = new Level();
+        console.log("then loadLevel tiles");
 
         createTiles(level, levelSpec.backgrounds);
-
         const backgroundLayer = createBackgroundLayer(level, backgroundSprites);
         level.comp.layers.push(backgroundLayer);
 

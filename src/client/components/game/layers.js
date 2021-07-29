@@ -65,6 +65,9 @@ export function createCollisionLayer(level) {
     const tileResolver = level.tileCollider.tiles;
     const tileSize = tileResolver.tileSize;
 
+    const drawBoundingBoxes = createEntityLayer(level.entities);
+
+
     const getByIndexOriginal = tileResolver.getByIndex;
     tileResolver.getByIndex = function getByIndexFake(x, y) {
         resolvedTiles.push({x, y});
@@ -72,6 +75,9 @@ export function createCollisionLayer(level) {
     }
 
     return function drawCollision(context, camera) {
+
+        drawBoundingBoxes(context, camera);
+
         context.strokeStyle = 'blue';
         resolvedTiles.forEach(({x, y}) => {
             context.beginPath();
@@ -107,5 +113,21 @@ export function createCameraLayer(cameraToDraw) {
             cameraToDraw.size.x,
             cameraToDraw.size.y);
         context.stroke();
+    };
+}
+
+
+function createEntityLayer(entities) {
+    return function drawBoundingBox(context, camera) {
+        context.strokeStyle = 'red';
+        entities.forEach(entity => {
+            context.beginPath();
+            context.rect(
+                entity.bounds.left - camera.pos.x,
+                entity.bounds.top - camera.pos.y,
+                entity.size.x,
+                entity.size.y);
+            context.stroke();
+        });
     };
 }

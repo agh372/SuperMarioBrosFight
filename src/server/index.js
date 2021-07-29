@@ -10,12 +10,15 @@
 
 const express = require('express');
 const path = require('path');
+http = require('http');
 
 const app = express();
-const server = require('http').Server(app);
+const server = http.createServer(app);//require('http').Server(app);
 const io = require('socket.io')(server);
 
 let rooms = 0;
+
+var currentRoom;
 
 app.use(express.static('dist'));
 app.use('/level/',express.static('src/client/components/game/levels'));
@@ -34,6 +37,8 @@ var getUsersInRoomNumber = function(roomName, namespace) {
 io.on('connection', (socket) => {
 
     // Create a new game room and notify the creator of game.
+    
+
     socket.on('createGame', (data) => {
         console.log("server: room-"+ (rooms+1));
         socket.join(`room-${++rooms}`);
@@ -53,16 +58,40 @@ io.on('connection', (socket) => {
        var room =  io.nsps["/"].adapter.rooms[data.room];
      
          if (room && room.length === 1) {
-            console.log(room.length);
+            //console.log(room.length);
             socket.join(data.room);
-
+            currentRoom = data.room;
             socket.broadcast.to(data.room).emit('player1', {});
             socket.emit('player2', { name: data.name, room: data.room })
          } else {
           //  socket.emit('err', { message: 'Sorry, The room is full!' });
-          console.log("Room is full "+room.length);
+          //console.log("Room is full "+room.length);
      }
 });
+
+
+socket.on('marioKeyPressed', function (data) {
+
+// socket.emit('marioKeyPressedOther', { code: word}, function(err, success) {
+//     console.log(err);
+//     console.log(success);
+
+// });
+
+
+socket.broadcast.to(currentRoom).emit('marioKeyPressedOther', { key : data.key, type : data.type });
+
+//socket.emit('marioOther', { name: data.name, room: `room-${rooms}` });
+//console.log("key22: "+data.key);
+
+
+});
+
+
+
+
+
+
 
 });
 

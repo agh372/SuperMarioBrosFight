@@ -7,6 +7,8 @@ import Characters from './img/characters.gif';
 export function loadMarioSprite() {
     return loadImage(Characters)
     .then(image => {
+        console.log('Character image loaded', image);
+
         const mario = new SpriteSheet(image, 16, 16);
         mario.define('idle', 276, 44, 16, 16);
         return mario;

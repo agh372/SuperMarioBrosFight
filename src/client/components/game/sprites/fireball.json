@@ -1,0 +1,11 @@
+
+{
+    "imageURL": "/img/fireball.png",
+
+    "frames": [
+        {
+            "name": "idle",
+            "rect": [219, 151, 8, 8]
+        }
+    ]
+}

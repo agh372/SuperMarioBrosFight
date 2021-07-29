@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import img from './img/super.jpg';
+import img from './img/mario-vs-luigi.gif';
 
 
 export default styled.div`

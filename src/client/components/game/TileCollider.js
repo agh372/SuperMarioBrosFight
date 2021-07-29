@@ -6,7 +6,7 @@ export default class TileCollider {
         this.tiles = new TileResolver(tileMatrix);
     }
 
-    checkX(entity) {
+    checkX(entity, level) {
         let x;
         if (entity.vel.x > 0) {
             x = entity.pos.x + entity.size.x;
@@ -29,11 +29,19 @@ export default class TileCollider {
                 if (entity.pos.x + entity.size.x > match.x1) {
                     entity.pos.x = match.x1 - entity.size.x;
                     entity.vel.x = 0;
+                    if(entity.gravityDisabled){
+                        level.entities.delete(entity);
+
+                    }
                 }
             } else if (entity.vel.x < 0) {
                 if (entity.pos.x < match.x2) {
                     entity.pos.x = match.x2;
                     entity.vel.x = 0;
+                    if(entity.gravityDisabled){
+                        level.entities.delete(entity);
+
+                    }
                 }
             }
         });

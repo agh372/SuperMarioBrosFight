@@ -43,6 +43,8 @@ export default class Home extends Component {
     if (this.refs.myInput !== null) {
     	var input = this.refs.myInput;
       var name = input.value;
+      console.log("onClickNewGameButton: ");
+
       this.props.socket.emit('createGame', { name });
       this.player = new Player('foo','bar');
 
@@ -55,12 +57,25 @@ export default class Home extends Component {
   componentDidMount(){
 
     this.props.socket.on('newGame', (data) => {
+
+      console.log("onClickNewGameButton: ");
+
       // const message =
       //   `Hello, ${data.name}. Please ask your friend to enter Game ID: 
       //   ${data.room}. Waiting for player 2...`;
   this.state.id = data.room;
       console.log("player: "+this.state.id);
   });
+
+
+  this.props.socket.on('marioOther', (data) => {
+
+    console.log("listenToOtherPlayer: workk");
+  
+    //handleEvent(data.key);
+  
+  });
+  
   
   }
 
@@ -87,9 +102,3 @@ export default class Home extends Component {
     );
   }
 }
-
-
-// $('#join').on('click', () => {
-
-// });
-
