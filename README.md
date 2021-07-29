@@ -29,6 +29,4 @@ Navigate to <http://localhost:8080>.
 
 Rule: First player gets Mario and the second player gets Luigi and the player who knocks the other player wins.
 
-## TODO
-- Player Health bar
 
