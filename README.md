@@ -12,7 +12,6 @@ A multliplayer game built with socket.io + react + nodejs
 
 
 https://user-images.githubusercontent.com/37753430/115078094-b5742b00-9ec4-11eb-98e9-002830824fce.mp4
-a
 
 
 ## How to run
