@@ -15,7 +15,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "babel-polyfill": "^6.26.0",
-    "express": "^4.16.3",
+    "express": "^4.17.3",
     "mobx": "^5.8.0",
     "mobx-react": "^5.4.3",
     "react": "^16.5.2",
